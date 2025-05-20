@@ -13,6 +13,9 @@ metadata_server = os.getenv("BASE_URL")
 user = os.getenv('USERNAME')
 password = os.getenv('PASSWORD')
 
+config = configparser.ConfigParser()
+config.read(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'config.yaml'))
+metadata_output_path = config['METADATA'].get('OUTPUT_PATH')
 
 def generate_experiment_metadata(vid: str) -> Dict[str, Any]:
     """
@@ -31,8 +34,8 @@ def generate_experiment_metadata(vid: str) -> Dict[str, Any]:
         
         token_info = decode(token)
         
-        metadata_path = f"metadata/project_{vid}.json"
-        os.makedirs(os.path.dirname(metadata_path), exist_ok=True)
+        json_path = f"{metadata_output_path}/project_{vid}.json"
+        os.makedirs(os.path.dirname(json_path), exist_ok=True)
         
         metadata = {
             "vid": vid,
@@ -40,13 +43,13 @@ def generate_experiment_metadata(vid: str) -> Dict[str, Any]:
             "token_info": token_info
         }
         
-        with open(metadata_path, 'w') as f:
+        with open(json_path, 'w') as f:
             json.dump(metadata, f, indent=2)
             
         return {
             "success": True, 
             "info": {
-                "metadata_path": metadata_path
+                "metadata_path": json_path
             }
         }
         
