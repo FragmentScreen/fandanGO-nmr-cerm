@@ -9,10 +9,10 @@ class Plugin(core.Plugin):
     def define_args(cls):
 
         cls.define_arg(ACTION_GENERATE_EXPERIMENT_METADATA, {
-            'help': {'usage': '--logs-project-id PROJECT_ID',
-                     'epilog': '--logs-project-id 129'},
+            'help': {'usage': '--vid PROJECT_ID',
+                     'epilog': '--vid 129'},
             'args': {
-                'logs-project-id': {'help': 'id of the LOGS project',
+                'vid': {'help': 'id of the project',
                                     'required': True
                                     }
             }
