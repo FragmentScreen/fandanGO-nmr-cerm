@@ -85,6 +85,3 @@ def perform_action(args):
     success, info = generate_experiment_metadata(args['username'], args['password'], args['vid'])
     results = {'success': success, 'info': info}
     return results
-
-if __name__ == "__main__":
-    generate_experiment_metadata()
