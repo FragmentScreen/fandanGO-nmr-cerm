@@ -9,18 +9,12 @@ class Plugin(core.Plugin):
     def define_args(cls):
 
         cls.define_arg(ACTION_GENERATE_EXPERIMENT_METADATA, {
-            'help': {'usage': '--vid PROJECT_ID --username USERNAME --password PASSWORD',
+            'help': {'usage': '--vid PROJECT_ID',
                      'epilog': '--vid 129'},
             'args': {
-                'username': {'help': 'username for authentication',
-                             'required': True
-                             },
-                'password': {'help': 'password for authentication',
-                             'required': True
-                             },
                 'vid': {'help': 'id of the project',
-                                    'required': True
-                                    }
+                        'required': True
+                        }
             }
         })
 

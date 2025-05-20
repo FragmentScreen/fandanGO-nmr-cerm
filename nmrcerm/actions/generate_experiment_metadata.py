@@ -9,10 +9,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-BASE_URL = os.getenv("BASE_URL")
+metadata_server = os.getenv("BASE_URL")
+user = os.getenv('USERNAME')
+password = os.getenv('PASSWORD')
 
 
-def generate_experiment_metadata(username: str, password: str, vid: str) -> Dict[str, Any]:
+def generate_experiment_metadata(vid: str) -> Dict[str, Any]:
     """
     Function that generates metadata for a FandanGO project based on external system
 
@@ -25,7 +27,7 @@ def generate_experiment_metadata(username: str, password: str, vid: str) -> Dict
         Dict: Dictionary containing success status and metadata info
     """
     try:
-        token = login(username, password)
+        token = login(user, password)
         
         api_response = call_protected(token, vid)
         
@@ -59,7 +61,7 @@ def generate_experiment_metadata(username: str, password: str, vid: str) -> Dict
         }
 
 def login(username: str, password: str) -> str:
-    r = requests.post(f"{BASE_URL}/auth/login", json={"username": username, "password": password}, verify=False)
+    r = requests.post(f"{metadata_server}/auth/login", json={"username": username, "password": password}, verify=False)
     #r = requests.post(f"{BASE_URL}/auth/login",json={"username": username, "password": password}, verify="spring.crt")
     r.raise_for_status()
     token = r.json()["token"]
@@ -68,7 +70,7 @@ def login(username: str, password: str) -> str:
 
 def call_protected(token: str, vid: str) -> Dict[str, Any]:
     headers = {"Authorization": f"Bearer {token}"}
-    r = requests.get(f"{BASE_URL}/fandango/export/json/{vid}", headers=headers, verify=False)
+    r = requests.get(f"{metadata_server}/fandango/export/json/{vid}", headers=headers, verify=False)
     #r = requests.get(f"{BASE_URL}/fandango/export/json", headers=headers, verify="spring.crt")
     r.raise_for_status()
     print("Risposta API:", r.text)
@@ -82,6 +84,6 @@ def decode(token: str):
     return decoded
 
 def perform_action(args):
-    success, info = generate_experiment_metadata(args['username'], args['password'], args['vid'])
+    success, info = generate_experiment_metadata(args['vid'])
     results = {'success': success, 'info': info}
     return results
