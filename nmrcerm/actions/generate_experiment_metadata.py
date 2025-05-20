@@ -19,8 +19,6 @@ def generate_experiment_metadata(vid: str) -> Dict[str, Any]:
     Function that generates metadata for a FandanGO project based on external system
 
     Args:
-        username (str): Username for authentication
-        password (str): Password for authentication
         vid (str): Visit ID for the project
         
     Returns:
