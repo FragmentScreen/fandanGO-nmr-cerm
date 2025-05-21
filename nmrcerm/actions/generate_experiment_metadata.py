@@ -10,8 +10,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 metadata_server = os.getenv("BASE_URL")
-user = os.getenv('USERNAME')
-password = os.getenv('PASSWORD')
+user = os.getenv('WEBSERVER_USERNAME')
+password = os.getenv('WEBSERVER_PASSWORD')
 
 config = configparser.ConfigParser()
 config.read(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'config.yaml'))
@@ -28,6 +28,8 @@ def generate_experiment_metadata(vid: str) -> Dict[str, Any]:
         Dict: Dictionary containing success status and metadata info
     """
     try:
+        print(f"user:{user}")
+        print(f"password:{password}")
         token = login(user, password)
         
         api_response = call_protected(token, vid)
@@ -45,21 +47,15 @@ def generate_experiment_metadata(vid: str) -> Dict[str, Any]:
         
         with open(json_path, 'w') as f:
             json.dump(metadata, f, indent=2)
-            
-        return {
-            "success": True, 
-            "info": {
-                "metadata_path": json_path
-            }
-        }
-        
+
+        success = True
+        info = {"metadata_path": json_path}
+
     except Exception as e:
-        return {
-            "success": False,
-            "info": {
-                "error": str(e)
-            }
-        }
+        success = False
+        info = str(e)
+
+    return success, info
 
 def login(username: str, password: str) -> str:
     r = requests.post(f"{metadata_server}/auth/login", json={"username": username, "password": password}, verify=False)
