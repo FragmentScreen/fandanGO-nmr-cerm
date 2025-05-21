@@ -6,6 +6,7 @@ import jwt
 import pprint as pp
 from typing import List, Dict, Any
 from dotenv import load_dotenv
+from nmrcerm.db.sqlite_db import update_project
 
 load_dotenv()
 
@@ -17,11 +18,12 @@ config = configparser.ConfigParser()
 config.read(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'config.yaml'))
 metadata_output_path = config['METADATA'].get('OUTPUT_PATH')
 
-def generate_experiment_metadata(vid: str) -> Dict[str, Any]:
+def generate_experiment_metadata(project_name: str, vid: str) -> Dict[str, Any]:
     """
     Function that generates metadata for a FandanGO project based on external system
 
     Args:
+        project_name (str): FandanGO project name
         vid (str): Visit ID for the project
         
     Returns:
@@ -36,7 +38,7 @@ def generate_experiment_metadata(vid: str) -> Dict[str, Any]:
         
         token_info = decode(token)
         
-        json_path = f"{metadata_output_path}/project_{vid}.json"
+        json_path = f"{metadata_output_path}/project_{project_name}_{vid}.json"
         os.makedirs(os.path.dirname(json_path), exist_ok=True)
         
         metadata = {
@@ -49,6 +51,7 @@ def generate_experiment_metadata(vid: str) -> Dict[str, Any]:
             json.dump(metadata, f, indent=2)
 
         success = True
+        update_project(project_name, 'metadata_path', json_path)
         info = {"metadata_path": json_path}
 
     except Exception as e:
@@ -81,6 +84,6 @@ def decode(token: str):
     return decoded
 
 def perform_action(args):
-    success, info = generate_experiment_metadata(args['vid'])
+    success, info = generate_experiment_metadata(args['name'], args['vid'])
     results = {'success': success, 'info': info}
     return results
