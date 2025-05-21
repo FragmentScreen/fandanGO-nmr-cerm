@@ -1,6 +1,6 @@
 import core
-from nmrcerm.constants import ACTION_GENERATE_EXPERIMENT_METADATA
-from nmrcerm.actions import generate_experiment_metadata
+from nmrcerm.constants import ACTION_GENERATE_EXPERIMENT_METADATA, ACTION_PRINT_PROJECT
+from nmrcerm.actions import generate_experiment_metadata, print_project
 
 
 class Plugin(core.Plugin):
@@ -31,3 +31,4 @@ class Plugin(core.Plugin):
     @classmethod
     def define_methods(cls):
         cls.define_method(ACTION_GENERATE_EXPERIMENT_METADATA, generate_experiment_metadata.perform_action)
+        cls.define_method(ACTION_PRINT_PROJECT, print_project.perform_action)
