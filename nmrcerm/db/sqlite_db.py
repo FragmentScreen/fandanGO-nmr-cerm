@@ -30,3 +30,33 @@ def get_project_info(project_name):
     finally:
         if connection:
             close_connection_to_ddbb(connection)
+
+
+def get_visit_id(project_name):
+    connection = None
+    try:
+        connection = connect_to_ddbb()
+        cursor = connection.cursor()
+        cursor.execute('SELECT value FROM project_info WHERE project_name = ? AND key = "visit_id"', (project_name,))
+        library_metadata = cursor.fetchone()[0]
+        return library_metadata
+    except Exception as e:
+        print(f'... could not check projects because of: {e}')
+    finally:
+        if connection:
+            close_connection_to_ddbb(connection)
+
+
+def get_metadata_path(project_name):
+    connection = None
+    try:
+        connection = connect_to_ddbb()
+        cursor = connection.cursor()
+        cursor.execute('SELECT value FROM project_info WHERE project_name = ? AND key = "metadata_path"', (project_name,))
+        library_metadata = cursor.fetchone()[0]
+        return library_metadata
+    except Exception as e:
+        print(f'... could not check projects because of: {e}')
+    finally:
+        if connection:
+            close_connection_to_ddbb(connection)

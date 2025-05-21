@@ -51,6 +51,7 @@ def generate_experiment_metadata(project_name: str, vid: str) -> Dict[str, Any]:
             json.dump(metadata, f, indent=2)
 
         success = True
+        update_project(project_name, 'visit_id', vid)
         update_project(project_name, 'metadata_path', json_path)
         info = {"metadata_path": json_path}
 
