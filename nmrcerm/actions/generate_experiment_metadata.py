@@ -2,7 +2,6 @@ import configparser
 import os
 import json
 import requests
-import jwt
 import pprint as pp
 from typing import List, Dict, Any
 from dotenv import load_dotenv
@@ -10,9 +9,9 @@ from nmrcerm.db.sqlite_db import update_project
 
 load_dotenv()
 
-metadata_server = os.getenv("BASE_URL")
-user = os.getenv('WEBSERVER_USERNAME')
-password = os.getenv('WEBSERVER_PASSWORD')
+metadata_server = os.getenv("CERM_BASE_URL")
+user = os.getenv('CERM_USER')
+password = os.getenv('CERM_PASSWORD')
 
 config = configparser.ConfigParser()
 config.read(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'config.yaml'))
