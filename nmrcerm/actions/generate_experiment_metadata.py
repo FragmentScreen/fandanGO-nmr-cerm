@@ -10,7 +10,7 @@ from nmrcerm.db.sqlite_db import update_project
 load_dotenv()
 
 metadata_server = os.getenv("CERM_BASE_URL")
-user = os.getenv('CERM_USER')
+user = os.getenv('CERM_USERNAME')
 password = os.getenv('CERM_PASSWORD')
 
 config = configparser.ConfigParser()
