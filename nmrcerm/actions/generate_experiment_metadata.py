@@ -13,6 +13,7 @@ load_dotenv()
 metadata_server = os.getenv("CERM_BASE_URL")
 user = os.getenv('CERM_USERNAME')
 password = os.getenv('CERM_PASSWORD')
+api_decode = os.getenv('CERM_API_DECODE')
 
 config = configparser.ConfigParser()
 config.read(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'config.yaml'))
@@ -79,7 +80,7 @@ def call_protected(token: str, vid: str) -> Dict[str, Any]:
     return r.json()  
 
 def decode(token: str):
-    decoded = jwt.decode(token, "mysupersecretkeythatshouldbestoredsafe",
+    decoded = jwt.decode(token, api_decode,
     algorithms=["HS256"])
     print("Payload decodificato:", decoded)
     return decoded
