@@ -72,7 +72,7 @@ def login(username: str, password: str) -> str:
 
 def call_protected(token: str, vid: str) -> Dict[str, Any]:
     headers = {"Authorization": f"Bearer {token}"}
-    r = requests.get(f"{metadata_server}/fandango/export/json/{vid}", headers=headers, verify=False)
+    r = requests.get(f"{metadata_server}/fandango/export/json/PID{vid}", headers=headers, verify=False)
     #r = requests.get(f"{BASE_URL}/fandango/export/json", headers=headers, verify="spring.crt")
     r.raise_for_status()
     print("Risposta API:", r.text)
