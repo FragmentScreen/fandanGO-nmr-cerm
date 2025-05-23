@@ -42,14 +42,9 @@ def generate_experiment_metadata(project_name: str, vid: str) -> Dict[str, Any]:
         json_path = f"{metadata_output_path}/project_{project_name}_{vid}.json"
         os.makedirs(os.path.dirname(json_path), exist_ok=True)
         
-        metadata = {
-            "vid": vid,
-            "api_response": api_response,
-            "token_info": token_info
-        }
         
         with open(json_path, 'w') as f:
-            json.dump(metadata, f, indent=2)
+            json.dump(api_response, f, indent=2)
 
         success = True
         update_project(project_name, 'visit_id', vid)
