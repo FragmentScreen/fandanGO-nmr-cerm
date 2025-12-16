@@ -98,14 +98,14 @@ def send_metadata(project_name):
             
             try:
                 # Create sample record
-                sample_record = Record(bucket.id, 'TestSchema', f"{sample_name}: {sample_uuid}")
+                sample_record = Record(bucket.id, 'Generic', f"{sample_name}: {sample_uuid}")
                 push_record_safe(visit, sample_record)
                 print(f"✓ Sample record created: {sample_record.id}")
                 
                 sample_data = {k: v for k, v in sample.items() if k != 'experimentDTO'}
                 
                 # Create field for sample data
-                sample_field = Field(sample_record.id, 'TestFieldType', sample_data)
+                sample_field = Field(sample_record.id, 'JSON', sample_data)
                 print('  Pushing sample field...')
                 
                 push_field_safe(visit, sample_field)
@@ -128,7 +128,7 @@ def send_metadata(project_name):
                 created_fields.append({
                     'record_id': sample_record.id,
                     'field_id': getattr(sample_field, 'id', 'unknown'),
-                    'field_type': 'TestFieldType',
+                    'field_type': 'JSON',
                     'description': f'Sample data for {sample_name}',
                     'data': sample_data,
                     'field_metadata': sample_field.__dict__ if hasattr(sample_field, '__dict__') else {},
@@ -143,11 +143,11 @@ def send_metadata(project_name):
                         print(f"    [{dataset_idx + 1}] Processing dataset: {dataset_id}")
                         
                         try:
-                            dataset_record = Record(bucket.id, 'TestSchema', f"dataset_{dataset_id}_experiment_{sample_uuid}")
+                            dataset_record = Record(bucket.id, 'Generic', f"dataset_{dataset_id}_experiment_{sample_uuid}")
                             push_record_safe(visit, dataset_record)
                             print(f"    ✓ Dataset record created: {dataset_record.id}")
                             
-                            dataset_field = Field(dataset_record.id, 'TestFieldType', experiment_dto, description=f"{sample_name}_Dataset_{dataset_id}")
+                            dataset_field = Field(dataset_record.id, 'JSON', experiment_dto, description=f"{sample_name}_Dataset_{dataset_id}")
                             print(f"      Pushing dataset field...")
                             
                             push_field_safe(visit, dataset_field)
@@ -169,7 +169,7 @@ def send_metadata(project_name):
                             created_fields.append({
                                 'record_id': dataset_record.id,
                                 'field_id': getattr(dataset_field, 'id', 'unknown'),
-                                'field_type': 'TestFieldType',
+                                'field_type': 'JSON',
                                 'description': f"{sample_name}_Dataset_{dataset_id}",
                                 'data': experiment_dto,
                                 'field_metadata': dataset_field.__dict__ if hasattr(dataset_field, '__dict__') else {},
@@ -184,11 +184,11 @@ def send_metadata(project_name):
                                     print(f"        [{exp_idx + 1}] Processing experiment: {expno}")
                                     
                                     try:
-                                        experiment_record = Record(bucket.id, 'TestSchema', f"experiment_{expno}_dataset_{dataset_id}")
+                                        experiment_record = Record(bucket.id, 'Generic', f"experiment_{expno}_dataset_{dataset_id}")
                                         push_record_safe(visit, experiment_record)
                                         print(f"        ✓ Experiment record created: {experiment_record.id}")
                                         
-                                        experiment_field = Field(experiment_record.id, 'TestFieldType', experiment)
+                                        experiment_field = Field(experiment_record.id, 'JSON', experiment)
                                         print(f"          Pushing experiment field...")
                                         
                                         push_field_safe(visit, experiment_field)
@@ -210,7 +210,7 @@ def send_metadata(project_name):
                                         created_fields.append({
                                             'record_id': experiment_record.id,
                                             'field_id': getattr(experiment_field, 'id', 'unknown'),
-                                            'field_type': 'TestFieldType',
+                                            'field_type': 'JSON',
                                             'description': f'Experiment {expno} data',
                                             'data': experiment,
                                             'field_metadata': experiment_field.__dict__ if hasattr(experiment_field, '__dict__') else {},
