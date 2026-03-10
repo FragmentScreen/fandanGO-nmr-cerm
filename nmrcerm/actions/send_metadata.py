@@ -98,7 +98,7 @@ def send_metadata(project_name):
             
             try:
                 # Create sample record
-                sample_record = Record(bucket.id, 'Generic', f"{sample_name}: {sample_uuid}")
+                sample_record = Record(bucket.id, 'Generic_NMR_CERM', f"{sample_name}: {sample_uuid}")
                 push_record_safe(visit, sample_record)
                 print(f"✓ Sample record created: {sample_record.id}")
                 
